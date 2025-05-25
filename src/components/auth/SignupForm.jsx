@@ -8,6 +8,8 @@ const SignupForm = ({ onSwitch, onSubmit }) => {
     password: '',
     phoneNumber: '',
     role: 'ROLE_USER',
+    description: '',
+    dpUrl: ''
   });
 
   const [errors, setErrors] = useState({});
@@ -21,6 +23,11 @@ const SignupForm = ({ onSwitch, onSubmit }) => {
 
     if (!formData.password.trim()) errs.password = 'Password is required';
     if (!formData.phoneNumber.trim()) errs.phoneNumber = 'Phone number is required';
+
+    if (formData.role === 'ROLE_ORGANIZER') {
+      if (!formData.description.trim()) errs.description = 'Description is required';
+      if (!formData.dpUrl.trim()) errs.dpUrl = 'DP URL is required';
+    }
 
     setErrors(errs);
     return Object.keys(errs).length === 0;
@@ -109,6 +116,36 @@ const SignupForm = ({ onSwitch, onSubmit }) => {
             <option value="ROLE_ORGANIZER">Organizer</option>
           </Form.Select>
         </Form.Group>
+
+        {formData.role === 'ROLE_ORGANIZER' && (
+          <>
+            <Form.Group controlId="signupDescription" className="mb-3">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                placeholder="Enter description"
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                isInvalid={!!errors.description}
+              />
+              <Form.Control.Feedback type="invalid">{errors.description}</Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group controlId="signupDpUrl" className="mb-3">
+              <Form.Label>DP URL</Form.Label>
+              <Form.Control
+                type="url"
+                placeholder="Enter display picture URL"
+                name="dpUrl"
+                value={formData.dpUrl}
+                onChange={handleChange}
+                isInvalid={!!errors.dpUrl}
+              />
+              <Form.Control.Feedback type="invalid">{errors.dpUrl}</Form.Control.Feedback>
+            </Form.Group>
+          </>
+        )}
 
         <Button variant="primary" type="submit" className="w-100">
           Register

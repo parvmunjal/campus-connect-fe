@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://campusconnect-o0ic.onrender.com/auth';
+const BASE_URL = 'https://campusconnect-o0ic.onrender.com';
 
 export const signin = async (credentials) => {
   try {
-    const response = await axios.post(`${BASE_URL}/signin`, credentials, {
+    const response = await axios.post(`${BASE_URL}/auth/signin`, credentials, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -26,7 +26,10 @@ export const signin = async (credentials) => {
 
 export const signup = async (userInfo) => {
   try {
-    const response = await axios.post(`${BASE_URL}/signup`, userInfo, {
+    const isOrganizer = userInfo.role === 'ROLE_ORGANIZER';
+    const endpoint = isOrganizer ? '/organizers' : '/auth/signup';
+
+    const response = await axios.post(`${BASE_URL}${endpoint}`, userInfo, {
       headers: {
         'Content-Type': 'application/json',
       },

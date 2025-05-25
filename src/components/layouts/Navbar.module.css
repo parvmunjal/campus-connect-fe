@@ -24,3 +24,8 @@
 .basicNavbar{
   margin-right: -60px;
 }
+@media(max-width:768px){
+  .basicNavbar{
+  margin-right: 0px;
+}
+}

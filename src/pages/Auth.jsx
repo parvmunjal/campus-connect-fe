@@ -5,9 +5,12 @@ import styles from '../styles/Auth.module.css';
 import { signin, signup } from '../services/authService';
 import { useAuth } from '../context/AuthContext';
 import {useNavigate} from 'react-router-dom';
+import {toast} from 'react-toastify';
+import Loader from '../components/common/Loader'; 
+
 
 const Auth = () => {
-  const [isLogin, setIsLogin] = useState(true); // true = show LoginForm, false = show SignupForm
+  const [isLogin, setIsLogin] = useState(true); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -20,9 +23,11 @@ const Auth = () => {
     try {
       const data = await signin(credentials);
       login({ token: data.token, userId: data.userId });
+      toast.success("Logged in successfully!")
       navigate('/')
     } catch (err) {
       setError(err.message);
+      toast.error("Login failed.")
       throw err; 
     } finally {
       setLoading(false);
@@ -35,8 +40,10 @@ const Auth = () => {
     try {
       await signup(userInfo);
       setIsLogin(true);
+      toast.success("Account created successfully!")
     } catch (err) {
       setError(err.message);
+      toast.error("Signup failed.")
       throw err; 
     } finally {
       setLoading(false);
@@ -49,6 +56,7 @@ const Auth = () => {
 
   return (
     <div className={styles.authContainer}>
+        {loading && <Loader/>}
       <div className={styles.formsContainer}>
         <div className={`${styles.formsWrapper} ${!isLogin ? styles.slideSignup : ''}`}>
           <div className={`${styles.formSection} ${isLogin ? `${styles.activeForm} ${styles.loginMargin}` : styles.inactiveForm}`}>

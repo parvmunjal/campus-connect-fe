@@ -3,12 +3,14 @@ import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { Link,useNavigate} from 'react-router-dom';
 import styles from './Navbar.module.css';
 import { useAuth } from '../../context/AuthContext'; // adjust path if needed
+import {toast} from 'react-toastify';
 
 const NavBar = () => {
   const { auth,logout } = useAuth();
   const navigate=useNavigate();
 const handleLogout= ()=>{
   logout();
+  toast.success("Logged out successfully!")
   navigate('/');
 };
   return (
@@ -21,7 +23,7 @@ const handleLogout= ()=>{
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
         <Navbar.Collapse id="basic-navbar-nav" className={styles.basicNavbar}>
-          <Nav className={`ms-auto ${styles.navWrapper}`}>
+          <Nav className={`ms-auto d-flex align-items-center ${styles.navWrapper}`}>
             <Nav.Link as={Link} to="/" className={styles.navLinkCustom}>Home</Nav.Link>
             <Nav.Link as={Link} to="/about" className={styles.navLinkCustom}>About</Nav.Link>
 

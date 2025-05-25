@@ -108,3 +108,39 @@
 .sideText p {
   margin: 0.2rem 0;
 }
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .authContainer {
+    flex-direction: column;
+    padding: 1rem;
+    height: auto;
+  }
+
+  .formsContainer {
+    width: 100%;
+  }
+
+  .formsWrapper {
+    flex-direction: column;
+    width: 100%;
+    transform: none !important; /* Disable slide on mobile */
+  }
+
+  .formSection {
+    width: 100%;
+    transform: none !important;
+    opacity: 1 !important;
+    display: block !important;
+    margin: 0;
+  }
+
+  .inactiveForm,
+  .hiddenForm {
+    display: none !important;
+  }
+
+  .loginMargin {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+}
