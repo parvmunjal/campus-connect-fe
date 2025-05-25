@@ -21,3 +21,6 @@
 .navLinkCustom:hover {
   color: var(--primary-color);
 }
+.basicNavbar{
+  margin-right: -60px;
+}
