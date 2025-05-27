@@ -6,30 +6,35 @@ export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({
     token: null,
     userId: null,
+    role: null, 
   });
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
     const storedUserId = localStorage.getItem('userId');
+    const storedRole = localStorage.getItem('role');
 
-    if (storedToken && storedUserId) {
+    if (storedToken && storedUserId && storedRole) {
       setAuth({
         token: storedToken,
         userId: parseInt(storedUserId),
+        role: storedRole,
       });
     }
   }, []);
 
-  const login = ({ token, userId }) => {
-    setAuth({ token, userId });
+  const login = ({ token, userId, role }) => {
+    setAuth({ token, userId, role }); 
     localStorage.setItem('token', token);
     localStorage.setItem('userId', userId);
+    localStorage.setItem('role', role); 
   };
 
   const logout = () => {
-    setAuth({ token: null, userId: null });
+    setAuth({ token: null, userId: null, role: null }); 
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
+    localStorage.removeItem('role'); 
   };
 
   return (

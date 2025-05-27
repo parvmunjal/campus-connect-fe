@@ -24,11 +24,6 @@ const SignupForm = ({ onSwitch, onSubmit }) => {
     if (!formData.password.trim()) errs.password = 'Password is required';
     if (!formData.phoneNumber.trim()) errs.phoneNumber = 'Phone number is required';
 
-    if (formData.role === 'ROLE_ORGANIZER') {
-      if (!formData.description.trim()) errs.description = 'Description is required';
-      if (!formData.dpUrl.trim()) errs.dpUrl = 'DP URL is required';
-    }
-
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -108,6 +103,18 @@ const SignupForm = ({ onSwitch, onSubmit }) => {
           />
           <Form.Control.Feedback type="invalid">{errors.phoneNumber}</Form.Control.Feedback>
         </Form.Group>
+        <Form.Group controlId="signupDpUrl" className="mb-3">
+              <Form.Label>DP URL</Form.Label>
+              <Form.Control
+                type="url"
+                placeholder="Enter display picture URL"
+                name="dpUrl"
+                value={formData.dpUrl}
+                onChange={handleChange}
+                isInvalid={!!errors.dpUrl}
+              />
+              <Form.Control.Feedback type="invalid">{errors.dpUrl}</Form.Control.Feedback>
+            </Form.Group>
 
         <Form.Group controlId="signupRole" className="mb-3">
           <Form.Label>Role</Form.Label>
@@ -130,19 +137,6 @@ const SignupForm = ({ onSwitch, onSubmit }) => {
                 isInvalid={!!errors.description}
               />
               <Form.Control.Feedback type="invalid">{errors.description}</Form.Control.Feedback>
-            </Form.Group>
-
-            <Form.Group controlId="signupDpUrl" className="mb-3">
-              <Form.Label>DP URL</Form.Label>
-              <Form.Control
-                type="url"
-                placeholder="Enter display picture URL"
-                name="dpUrl"
-                value={formData.dpUrl}
-                onChange={handleChange}
-                isInvalid={!!errors.dpUrl}
-              />
-              <Form.Control.Feedback type="invalid">{errors.dpUrl}</Form.Control.Feedback>
             </Form.Group>
           </>
         )}

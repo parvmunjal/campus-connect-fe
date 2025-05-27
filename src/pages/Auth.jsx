@@ -22,7 +22,7 @@ const Auth = () => {
     setError(null);
     try {
       const data = await signin(credentials);
-      login({ token: data.token, userId: data.userId });
+      login({ token: data.token, userId: data.userId,role: data.role });
       toast.success("Logged in successfully!")
       navigate('/')
     } catch (err) {
