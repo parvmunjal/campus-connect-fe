@@ -12,6 +12,9 @@ const ProfileCardModal = ({ show, onClose }) => {
   const { auth } = useAuth();
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [galleryImages, setGalleryImages] = useState([]);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -26,6 +29,11 @@ const ProfileCardModal = ({ show, onClose }) => {
 
         const res = await axios.get(endpoint);
         setProfileData(res.data);
+        if (auth.role === 'ROLE_ORGANIZER' && res.data.eventGallery) {
+        const images = res.data.eventGallery.split(',').map((url) => url.trim());
+        setGalleryImages(images);
+        setCurrentImageIndex(0);
+      }
       } catch (err) {
         toast.error('Failed to fetch profile');
       } finally {
@@ -65,7 +73,34 @@ const ProfileCardModal = ({ show, onClose }) => {
               {auth.role === 'ROLE_ORGANIZER' && (
                 <>
                   <ProfileField label="Description" value={profileData?.description} />
-                  <ProfileField label="Event Gallery" value={profileData?.eventGallery} />
+
+                  {profileData?.eventGallery && (
+                    <div className={styles.profileField}>
+                      <div className={styles.label}>Event Gallery</div>
+                      <div className={styles.carouselWrapper}>
+                        <button
+                          className={styles.arrow}
+                          onClick={() => setCurrentImageIndex((prev) => (prev - 1 + galleryImages.length) % galleryImages.length)}
+                        >
+                          ‹
+                        </button>
+
+                        <img
+                          src={galleryImages[currentImageIndex]}
+                          alt={`Event ${currentImageIndex + 1}`}
+                          className={styles.carouselImage}
+                        />
+
+                        <button
+                          className={styles.arrow}
+                          onClick={() => setCurrentImageIndex((prev) => (prev + 1) % galleryImages.length)}
+                        >
+                          ›
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
                 </>
               )}
             </div>
