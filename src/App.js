@@ -3,7 +3,7 @@ import "./App.css";
 import Navbar from "./components/layouts/Navbar";
 import Footer from "./components/layouts/Footer";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
 import Auth from './pages/Auth';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -16,7 +16,7 @@ function App() {
         <Navbar/>
         <main className="flex-fill">
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Dashboard />} />
             {/* <Route path="/about" element={<About />} /> */}
             <Route path="/auth" element={<Auth />} />
           </Routes>

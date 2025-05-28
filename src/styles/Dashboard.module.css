@@ -1,0 +1,54 @@
+/* Apply full-page background */
+.fullPage {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to bottom right, #f0f4ff, #e0ecff);
+  min-height: 85vh;
+}
+
+/* Center everything in the container */
+.container {
+  min-height: 75vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  /* vertical center */
+  align-items: center;      /* horizontal center */
+  text-align: center;
+  padding: 2rem;
+}
+
+/* Heading style */
+.heading {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 3rem;
+  color: var(--primary-color);
+}
+
+/* Grid for the dashboard cards */
+.cardGrid {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: nowrap;
+}
+
+/* Ensure each card fits in a single row on large screens */
+.cardGrid > * {
+  flex: 0 0 220px;
+}
+
+/* Stack cards vertically on small screens */
+@media (max-width: 600px) {
+  .cardGrid {
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: nowrap; /* no wrap needed since column */
+  }
+
+  .cardGrid > * {
+    width: 180px;        /* fixed width for cards */
+    max-height: 160px;   /* responsive max width */
+    margin-bottom: 1.5rem; /* spacing between stacked cards */
+  }
+}
