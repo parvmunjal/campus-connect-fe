@@ -15,3 +15,34 @@ export const fetchEvents = async () => {
     }
   }
 };
+
+export const registerForEvent = async (eventId, userId) => {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('User not authenticated');
+
+  const res = await axios.post(
+    `${BASE_URL}/events/${eventId}/register/${userId}`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return res.data;
+};
+
+export const getUserRegisteredEvents = async (userId) => {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('User not authenticated');
+
+  const res = await axios.get(`${BASE_URL}/events/user/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return res.data;
+};
+

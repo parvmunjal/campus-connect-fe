@@ -6,8 +6,7 @@ import { toast } from 'react-toastify';
 import Loader from '../common/Loader';
 import { fetchUserProfile, fetchOrganizerProfile } from '../../services/profileService.js';
 
-const ProfileCardModal = ({ show, onClose }) => {
-  const { auth } = useAuth();
+const ProfileCardModal = ({ show, onClose, userId, role }) => {
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [galleryImages, setGalleryImages] = useState([]);
@@ -15,19 +14,19 @@ const ProfileCardModal = ({ show, onClose }) => {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      if (!show || !auth.userId || !auth.role) return;
+      if (!show || !userId || !role) return;
       setLoading(true);
       try {
         let data;
-        if (auth.role === 'ROLE_ORGANIZER') {
-          data = await fetchOrganizerProfile(auth.userId);
+        if (role === 'ROLE_ORGANIZER') {
+          data = await fetchOrganizerProfile(userId);
           if (data.eventGallery) {
             const images = data.eventGallery.split(',').map((url) => url.trim());
             setGalleryImages(images);
             setCurrentImageIndex(0);
           }
         } else {
-          data = await fetchUserProfile(auth.userId);
+          data = await fetchUserProfile(userId);
         }
         setProfileData(data);
       } catch (err) {
@@ -38,7 +37,7 @@ const ProfileCardModal = ({ show, onClose }) => {
     };
 
     fetchProfile();
-  }, [show, auth.userId, auth.role]);
+  }, [show, userId, role]);
 
   if (!show) return null;
 
@@ -64,10 +63,9 @@ const ProfileCardModal = ({ show, onClose }) => {
               <ProfileField label="Email" value={profileData?.email} />
               <ProfileField label="Phone Number" value={profileData?.phoneNumber} />
 
-              {auth.role === 'ROLE_ORGANIZER' && (
+              {role === 'ROLE_ORGANIZER' && (
                 <>
                   <ProfileField label="Description" value={profileData?.description} />
-
                   {galleryImages.length > 0 && (
                     <div className={styles.profileField}>
                       <div className={styles.label}>Event Gallery</div>
@@ -80,13 +78,11 @@ const ProfileCardModal = ({ show, onClose }) => {
                         >
                           ‹
                         </button>
-
                         <img
                           src={galleryImages[currentImageIndex]}
                           alt={`Event ${currentImageIndex + 1}`}
                           className={styles.carouselImage}
                         />
-
                         <button
                           className={styles.arrow}
                           onClick={() =>

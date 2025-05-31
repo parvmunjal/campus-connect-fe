@@ -2,13 +2,15 @@
 import React, { useEffect, useState } from 'react';
 import { fetchEvents } from '../services/eventService.js';
 import EventCard from '../components/events/EventCard';
+import EventDetailsModal from '../components/events/EventDetailsModal';
 import Loader from '../components/common/Loader';
 import { toast } from 'react-toastify';
-import styles from '../styles/Event.module.css'; 
+import styles from '../styles/Event.module.css';
 
 const Events = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedEvent, setSelectedEvent] = useState(null); // NEW
 
   const loadEvents = async () => {
     try {
@@ -26,7 +28,11 @@ const Events = () => {
   }, []);
 
   const handleCardClick = (event) => {
-    console.log('Clicked Event:', event);
+    setSelectedEvent(event); // OPEN MODAL
+  };
+
+  const handleCloseModal = () => {
+    setSelectedEvent(null);
   };
 
   return (
@@ -39,11 +45,16 @@ const Events = () => {
         ) : (
           <div className={styles.cardGrid}>
             {events.map((event) => (
-              <EventCard key={event.id} event={event} onClick={handleCardClick} />
+              <EventCard key={event.id} event={event} onClick={() => handleCardClick(event)} />
             ))}
           </div>
         )}
       </div>
+
+      {/* MODAL */}
+      {selectedEvent && (
+        <EventDetailsModal event={selectedEvent} onClose={handleCloseModal} />
+      )}
     </div>
   );
 };

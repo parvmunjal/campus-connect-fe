@@ -65,6 +65,8 @@ const NavBar = () => {
         <ProfileCardModal
         show={showProfileModal}
         onClose={handleProfileClose}
+        userId={auth.userId}
+        role={auth.role}
       />
       )}
     </>
