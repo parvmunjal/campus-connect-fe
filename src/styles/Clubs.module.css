@@ -1,22 +1,22 @@
-/* src/styles/Events.module.css */
+/* src/pages/Clubs.module.css */
 .container {
-  padding: 3rem 2rem;
+  padding: 2rem;
+  margin: 0 auto;
   min-height: 85vh;
   background: linear-gradient(to bottom right, #f0f4ff, #e0ecff);
-  text-align: center;
 }
 
 .heading {
   font-size: 2rem;
-  color: var(--primary-color);
-  margin-bottom: 2.5rem;
   font-weight: bold;
+  color: var(--primary-color);
   text-align: center;
+  margin-bottom: 2rem;
 }
 
-.cardGrid {
+.grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 2rem;
+  justify-content: center;
 }

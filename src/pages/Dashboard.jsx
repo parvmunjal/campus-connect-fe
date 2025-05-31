@@ -24,13 +24,13 @@ const Dashboard = () => {
         <DashboardCard
           icon={<FaUsers />}
           title="Explore Clubs"
-          onClick={() => console.log('Explore Clubs')}
+          onClick={() => navigate('/clubs')}
         />
         {auth.token && (
           <DashboardCard
             icon={<FaBookmark />}
             title="My Bookings"
-            onClick={() => console.log('My Bookings')}
+            onClick={() => navigate('/bookings')}
           />
         )}
       </div>
