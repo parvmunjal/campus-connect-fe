@@ -4,10 +4,11 @@ import { useAuth } from '../context/AuthContext';
 import DashboardCard from '../components/dashboard/DashboardCard';
 import { FaCalendarAlt, FaUsers, FaBookmark } from 'react-icons/fa';
 import styles from '../styles/Dashboard.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const { auth } = useAuth();
-
+  const navigate=useNavigate();
   return (
     <div className={styles.fullPage}>
     <div className={styles.container}>
@@ -18,7 +19,7 @@ const Dashboard = () => {
         <DashboardCard
           icon={<FaCalendarAlt />}
           title="View Events"
-          onClick={() => console.log('View Events')}
+          onClick={() => navigate('/events')}
         />
         <DashboardCard
           icon={<FaUsers />}

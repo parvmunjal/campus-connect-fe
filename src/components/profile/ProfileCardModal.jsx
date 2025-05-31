@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import styles from './ProfileCardModal.module.css';
 import ProfileField from './ProfileField';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import Loader from '../common/Loader';
-
-const BASE_URL = 'https://campusconnect-o0ic.onrender.com';
+import { fetchUserProfile, fetchOrganizerProfile } from '../../services/profileService.js';
 
 const ProfileCardModal = ({ show, onClose }) => {
   const { auth } = useAuth();
@@ -15,25 +13,23 @@ const ProfileCardModal = ({ show, onClose }) => {
   const [galleryImages, setGalleryImages] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-
   useEffect(() => {
     const fetchProfile = async () => {
       if (!show || !auth.userId || !auth.role) return;
-      //console.log(auth)
       setLoading(true);
       try {
-        const endpoint =
-          auth.role === 'ROLE_ORGANIZER'
-            ? `${BASE_URL}/organizers/byuser/${auth.userId}`
-            : `${BASE_URL}/users/${auth.userId}`;
-
-        const res = await axios.get(endpoint);
-        setProfileData(res.data);
-        if (auth.role === 'ROLE_ORGANIZER' && res.data.eventGallery) {
-        const images = res.data.eventGallery.split(',').map((url) => url.trim());
-        setGalleryImages(images);
-        setCurrentImageIndex(0);
-      }
+        let data;
+        if (auth.role === 'ROLE_ORGANIZER') {
+          data = await fetchOrganizerProfile(auth.userId);
+          if (data.eventGallery) {
+            const images = data.eventGallery.split(',').map((url) => url.trim());
+            setGalleryImages(images);
+            setCurrentImageIndex(0);
+          }
+        } else {
+          data = await fetchUserProfile(auth.userId);
+        }
+        setProfileData(data);
       } catch (err) {
         toast.error('Failed to fetch profile');
       } finally {
@@ -49,9 +45,7 @@ const ProfileCardModal = ({ show, onClose }) => {
   return (
     <div className={styles.overlay}>
       <div className={styles.modal}>
-        <button className={styles.closeButton} onClick={onClose}>
-          ×
-        </button>
+        <button className={styles.closeButton} onClick={onClose}>×</button>
 
         {loading ? (
           <Loader />
@@ -74,13 +68,15 @@ const ProfileCardModal = ({ show, onClose }) => {
                 <>
                   <ProfileField label="Description" value={profileData?.description} />
 
-                  {profileData?.eventGallery && (
+                  {galleryImages.length > 0 && (
                     <div className={styles.profileField}>
                       <div className={styles.label}>Event Gallery</div>
                       <div className={styles.carouselWrapper}>
                         <button
                           className={styles.arrow}
-                          onClick={() => setCurrentImageIndex((prev) => (prev - 1 + galleryImages.length) % galleryImages.length)}
+                          onClick={() =>
+                            setCurrentImageIndex((prev) => (prev - 1 + galleryImages.length) % galleryImages.length)
+                          }
                         >
                           ‹
                         </button>
@@ -93,14 +89,15 @@ const ProfileCardModal = ({ show, onClose }) => {
 
                         <button
                           className={styles.arrow}
-                          onClick={() => setCurrentImageIndex((prev) => (prev + 1) % galleryImages.length)}
+                          onClick={() =>
+                            setCurrentImageIndex((prev) => (prev + 1) % galleryImages.length)
+                          }
                         >
                           ›
                         </button>
                       </div>
                     </div>
                   )}
-
                 </>
               )}
             </div>

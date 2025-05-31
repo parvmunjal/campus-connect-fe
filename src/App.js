@@ -5,6 +5,7 @@ import Footer from "./components/layouts/Footer";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import Auth from './pages/Auth';
+import Event from './pages/Events';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -19,6 +20,7 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             {/* <Route path="/about" element={<About />} /> */}
             <Route path="/auth" element={<Auth />} />
+            <Route path="/events" element={<Event />} />
           </Routes>
         </main>
         <Footer />

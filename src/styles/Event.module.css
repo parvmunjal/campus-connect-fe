@@ -1,0 +1,20 @@
+/* src/styles/Events.module.css */
+.container {
+  padding: 3rem 2rem;
+  min-height: 85vh;
+  background: linear-gradient(to bottom right, #f0f4ff, #e0ecff);
+  text-align: center;
+}
+
+.heading {
+  font-size: 2rem;
+  color: var(--primary-color);
+  margin-bottom: 2.5rem;
+}
+
+.cardGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
