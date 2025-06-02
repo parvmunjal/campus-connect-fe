@@ -24,7 +24,12 @@ const Auth = () => {
       const data = await signin(credentials);
       login({ token: data.token, userId: data.userId,role: data.role });
       toast.success("Logged in successfully!")
-      navigate('/')
+      if(data.role=="ROLE_ORGANIZER"){
+        navigate('/organizer')
+      }
+      else{
+        navigate('/')
+      }
     } catch (err) {
       setError(err.message);
       toast.error("Login failed.")

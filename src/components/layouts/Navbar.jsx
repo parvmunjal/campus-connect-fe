@@ -25,11 +25,20 @@ const NavBar = () => {
   const handleProfileClose = () => {
     setShowProfileModal(false);
   };
+  const handleLogoOrHomeClick = () => {
+    console.log(auth.role)
+    if (auth.role == "ROLE_ORGANIZER") {
+      navigate('/organizer');
+    } else {
+      navigate('/');
+    }
+  };
+
   return (
     <>
       <Navbar expand="lg" className={styles.navbarCustom} variant="dark" sticky="top">
         <Container>
-          <Navbar.Brand as={Link} to="/" className={styles.navbarBrandCustom}>
+          <Navbar.Brand onClick={handleLogoOrHomeClick} className={styles.navbarBrandCustom}>
             CampusConnect
           </Navbar.Brand>
 
@@ -37,7 +46,7 @@ const NavBar = () => {
 
           <Navbar.Collapse id="basic-navbar-nav" className={styles.basicNavbar}>
             <Nav className={`ms-auto d-flex align-items-center ${styles.navWrapper}`}>
-              <Nav.Link as={Link} to="/" className={styles.navLinkCustom}>Home</Nav.Link>
+              <Nav.Link onClick={handleLogoOrHomeClick} className={styles.navLinkCustom}>Home</Nav.Link>
               <Nav.Link as={Link} to="/about" className={styles.navLinkCustom}>About</Nav.Link>
 
               {!auth.token ? (

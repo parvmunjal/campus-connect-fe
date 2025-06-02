@@ -31,6 +31,7 @@
   justify-content: center;
   gap: 2rem;
   flex-wrap: nowrap;
+  margin-bottom: 1.5rem;
 }
 
 /* Ensure each card fits in a single row on large screens */

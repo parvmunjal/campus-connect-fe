@@ -8,10 +8,13 @@ import Auth from './pages/Auth';
 import Event from './pages/Events';
 import Club from './pages/Clubs';
 import Booking from './pages/Bookings';
+import MyEvent from './pages/MyEvents';
+import OrganizerDashboard from './pages/OrganizerDashboard';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
+  let organizer='organizer';
   return (
     <Router>
       <div className="d-flex flex-column min-vh-100">
@@ -25,6 +28,8 @@ function App() {
             <Route path="/events" element={<Event />} />
             <Route path="/clubs" element={<Club />} />
             <Route path="/bookings" element={<Booking />} />
+            <Route path="/organizer" element={<OrganizerDashboard />} />
+            <Route path="/organizer/myevents" element={<MyEvent />} />
           </Routes>
         </main>
         <Footer />
