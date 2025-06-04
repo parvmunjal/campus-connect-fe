@@ -57,4 +57,16 @@ export const getOrganizerCreatedEvents = async (userId) => {
 
   return res.data;
 };
+export const createEvent = async (payload) => {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('User not authenticated');
+
+  const res = await axios.post(`${BASE_URL}/events`,payload, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return res.data;
+};
 
