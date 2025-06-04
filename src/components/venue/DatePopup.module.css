@@ -1,0 +1,68 @@
+/* src/styles/DatePopup.module.css */
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  z-index: 2000;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.slotSection {
+  margin-top: 15px;
+}
+
+.slotTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.slotTable th,
+.slotTable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.slotTable th {
+  background-color: #f4f4f4;
+}
+
+.slotTable tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.slotTable tr:hover {
+  background-color: #f1f1f1;
+}
+
+.closeBtn {
+  margin-top: 15px;
+  padding: 10px 15px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.closeBtn:hover {
+  background-color: var(--dark-bg);
+}

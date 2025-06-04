@@ -1,0 +1,74 @@
+.pageWrapper {
+  padding: 20px;
+  min-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.page {
+  background: linear-gradient(to bottom right, #f0f4ff, #e0ecff);
+}
+
+.calendar {
+  text-align: center;
+  width: 90%;
+}
+
+.calendar h1 {
+  font-size: 2rem;
+  color: var(--primary-color);
+  margin-bottom: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+/* Default grid for large screens */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+}
+
+/* Medium screens (e.g. tablets) - 3 columns */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Small screens (e.g. phones) - 2 columns */
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Extra small screens - 1 column */
+@media (max-width: 400px) {
+  .grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.day {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.day:hover {
+  background-color: var(--dark-bg);
+  color: white;
+  transform: scale(1.05);
+}
+
+.currentDay {
+  background-color: var(--primary-color);
+  color: white;
+}

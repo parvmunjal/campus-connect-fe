@@ -13,6 +13,7 @@ import CreateEvents from './pages/CreateEvents';
 import OrganizerDashboard from './pages/OrganizerDashboard';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import VenueAvailability from './pages/VenueAvailability';
 
 function App() {
   let organizer='organizer';
@@ -32,6 +33,7 @@ function App() {
             <Route path="/organizer" element={<OrganizerDashboard />} />
             <Route path="/organizer/myevents" element={<MyEvent />} />
             <Route path="/organizer/create" element={<CreateEvents />} />
+            <Route path="/organizer/venue" element={<VenueAvailability />} />
           </Routes>
         </main>
         <Footer />
