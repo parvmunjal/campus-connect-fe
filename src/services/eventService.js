@@ -69,4 +69,16 @@ export const createEvent = async (payload) => {
 
   return res.data;
 };
+export const eventAnalytics = async (eventId) => {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('User not authenticated');
+
+  const res = await axios.get(`${BASE_URL}/users/event/${eventId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return res.data;
+};
 
