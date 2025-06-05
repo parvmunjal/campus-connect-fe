@@ -224,4 +224,62 @@
   font-size: 0.9rem;
   color: gray;
 }
+.editContainer {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+.input {
+  padding: 0.6rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+}
+.details {
+  flex: 0 0 52%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  gap: 1rem;
+  text-align: center;
+}
+.textarea {
+  height: 100px;
+  padding: 0.6rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  resize: vertical;
+}
+.buttonGroup {
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
 
+.saveButton {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+.saveButton:hover {
+  background-color: var(--dark-bg);
+}
+
+.cancelButton {
+  padding: 0.75rem 1.5rem;
+  background-color: #ccc;
+  color: #333;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+}

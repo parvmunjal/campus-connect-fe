@@ -81,4 +81,17 @@ export const eventAnalytics = async (eventId) => {
 
   return res.data;
 };
+export const updateEvent = async (eventId, updatedData) => {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('User not authenticated');
+
+  const res = await axios.put(`${BASE_URL}/events/${eventId}`, updatedData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return res.data;
+};
+
 

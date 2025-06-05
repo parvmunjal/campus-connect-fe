@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import styles from './EventDetailsModal.module.css';
-import { useAuth } from '../../context/AuthContext';
+import React, { useState, useEffect } from "react";
+import styles from "./EventDetailsModal.module.css";
+import { useAuth } from "../../context/AuthContext";
 import {
   registerForEvent,
   getUserRegisteredEvents,
   eventAnalytics,
-} from '../../services/eventService';
-import { toast } from 'react-toastify';
-import ProfileCardModal from '../profile/ProfileCardModal';
-import { Bar } from 'react-chartjs-2';
+  updateEvent,
+} from "../../services/eventService";
+import { toast } from "react-toastify";
+import ProfileCardModal from "../profile/ProfileCardModal";
+import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -16,7 +17,7 @@ import {
   BarElement,
   Tooltip,
   Legend,
-} from 'chart.js';
+} from "chart.js";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
@@ -27,21 +28,74 @@ const EventDetailsModal = ({ event, onClose }) => {
   const [checkingRegistration, setCheckingRegistration] = useState(true);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
-  const [activeTab, setActiveTab] = useState('details');
+  const [activeTab, setActiveTab] = useState("details");
   const [registeredUsers, setRegisteredUsers] = useState([]);
   const [loadingAnalytics, setLoadingAnalytics] = useState(false);
+  const [formData, setFormData] = useState({
+    eventName: event.eventName,
+    eventDate: new Date(event.eventDate).toISOString().slice(0, 16), // for datetime-local
+    location: event.location,
+    registrationFee: event.registrationFee || "",
+    description: event.description,
+    posterUrl: event.posterUrl || "",
+  });
+
+  const [submitting, setSubmitting] = useState(false);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+  const handleUpdate = async () => {
+    const {
+      eventName,
+      eventDate,
+      location,
+      description,
+      posterUrl,
+      registrationFee,
+    } = formData;
+
+    if (!eventName || !eventDate || !location || !description) {
+      toast.error("Please fill out all required fields.");
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const payload = {
+        eventName,
+        description,
+        eventDate: new Date(eventDate).toISOString(),
+        location,
+        posterUrl,
+        registrationFee: parseFloat(registrationFee || 0),
+      };
+
+      await updateEvent(event.id, payload);
+      toast.success("Event updated successfully!");
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Failed to update event");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   useEffect(() => {
     const checkRegistration = async () => {
       try {
-        if (!auth?.userId || !event?.id || auth.role !== 'ROLE_USER') return;
+        if (!auth?.userId || !event?.id || auth.role !== "ROLE_USER") return;
         setCheckingRegistration(true);
         const registeredEvents = await getUserRegisteredEvents(auth.userId);
-        const alreadyRegistered = registeredEvents.some((e) => e.id === event.id);
+        const alreadyRegistered = registeredEvents.some(
+          (e) => e.id === event.id
+        );
         setIsRegistered(alreadyRegistered);
       } catch (err) {
-        console.error('Failed to check registration:', err);
-        toast.error('Failed to check registration status.');
+        console.error("Failed to check registration:", err);
+        toast.error("Failed to check registration status.");
       } finally {
         setCheckingRegistration(false);
       }
@@ -52,14 +106,14 @@ const EventDetailsModal = ({ event, onClose }) => {
 
   useEffect(() => {
     const fetchAnalytics = async () => {
-      if (activeTab !== 'analytics' || !event?.id) return;
+      if (activeTab !== "analytics" || !event?.id) return;
       try {
         setLoadingAnalytics(true);
         const users = await eventAnalytics(event.id);
         setRegisteredUsers(users);
       } catch (err) {
-        console.error('Failed to fetch analytics:', err);
-        toast.error('Failed to fetch analytics.');
+        console.error("Failed to fetch analytics:", err);
+        toast.error("Failed to fetch analytics.");
       } finally {
         setLoadingAnalytics(false);
       }
@@ -70,29 +124,29 @@ const EventDetailsModal = ({ event, onClose }) => {
 
   if (!event) return null;
 
-  const formattedDate = new Date(event.eventDate).toLocaleString('en-IN', {
-    dateStyle: 'full',
-    timeStyle: 'short',
+  const formattedDate = new Date(event.eventDate).toLocaleString("en-IN", {
+    dateStyle: "full",
+    timeStyle: "short",
   });
 
   const feeDisplay =
     !event.registrationFee || event.registrationFee === 0
-      ? 'Free'
+      ? "Free"
       : `Rs ${event.registrationFee}`;
 
   const handleRegister = async () => {
     if (isRegistered) {
-      toast.info('You are already registered for this event.');
+      toast.info("You are already registered for this event.");
       return;
     }
 
     setRegistering(true);
     try {
       await registerForEvent(event.id, auth.userId);
-      toast.success('Successfully registered for the event!');
+      toast.success("Successfully registered for the event!");
       setIsRegistered(true);
     } catch (error) {
-      toast.error(error?.response?.data?.message || 'Registration failed');
+      toast.error(error?.response?.data?.message || "Registration failed");
     } finally {
       setRegistering(false);
     }
@@ -106,35 +160,42 @@ const EventDetailsModal = ({ event, onClose }) => {
             ×
           </button>
 
-          {auth?.role === 'ROLE_ORGANIZER' && auth.userId === event.organizer.user.id && (
-            <div className={styles.tabBar}>
-              <button
-                className={`${styles.tab} ${activeTab === 'details' ? styles.activeTab : ''}`}
-                onClick={() => setActiveTab('details')}
-              >
-                Details
-              </button>
-              <button
-                className={`${styles.tab} ${activeTab === 'analytics' ? styles.activeTab : ''}`}
-                onClick={() => setActiveTab('analytics')}
-              >
-                Analytics
-              </button>
-              <button
-                className={`${styles.tab} ${activeTab === 'edit' ? styles.activeTab : ''}`}
-                onClick={() => setActiveTab('edit')}
-              >
-                Edit Event
-              </button>
-            </div>
-          )}
+          {auth?.role === "ROLE_ORGANIZER" &&
+            auth.userId === event.organizer.user.id && (
+              <div className={styles.tabBar}>
+                <button
+                  className={`${styles.tab} ${
+                    activeTab === "details" ? styles.activeTab : ""
+                  }`}
+                  onClick={() => setActiveTab("details")}
+                >
+                  Details
+                </button>
+                <button
+                  className={`${styles.tab} ${
+                    activeTab === "analytics" ? styles.activeTab : ""
+                  }`}
+                  onClick={() => setActiveTab("analytics")}
+                >
+                  Analytics
+                </button>
+                <button
+                  className={`${styles.tab} ${
+                    activeTab === "edit" ? styles.activeTab : ""
+                  }`}
+                  onClick={() => setActiveTab("edit")}
+                >
+                  Edit Event
+                </button>
+              </div>
+            )}
 
           <div className={styles.content}>
-            {activeTab === 'details' && (
+            {activeTab === "details" && (
               <>
                 <div className={styles.posterContainer}>
                   <img
-                    src={event.posterUrl || '/default-poster.jpg'}
+                    src={event.posterUrl || "/default-poster.jpg"}
                     alt="Event Poster"
                     className={styles.poster}
                   />
@@ -149,7 +210,7 @@ const EventDetailsModal = ({ event, onClose }) => {
                     <strong>Location:</strong> {event.location}
                   </p>
                   <p className={styles.organizer}>
-                    <strong>Organizer:</strong>{' '}
+                    <strong>Organizer:</strong>{" "}
                     <span
                       className={styles.organizerLink}
                       onClick={() => setShowProfileModal(true)}
@@ -164,7 +225,7 @@ const EventDetailsModal = ({ event, onClose }) => {
                     <strong>Description:</strong> {event.description}
                   </p>
 
-                  {auth?.role === 'ROLE_USER' && (
+                  {auth?.role === "ROLE_USER" && (
                     <>
                       {checkingRegistration ? (
                         <button className={styles.registerBtn} disabled>
@@ -176,7 +237,7 @@ const EventDetailsModal = ({ event, onClose }) => {
                           onClick={handleRegister}
                           disabled={registering}
                         >
-                          {registering ? 'Registering...' : 'Register'}
+                          {registering ? "Registering..." : "Register"}
                         </button>
                       ) : (
                         <button className={styles.registeredBtn} disabled>
@@ -189,7 +250,7 @@ const EventDetailsModal = ({ event, onClose }) => {
               </>
             )}
 
-            {activeTab === 'analytics' && (
+            {activeTab === "analytics" && (
               <div className={styles.analyticsContainer}>
                 <div className={styles.userList}>
                   <h3>Registered Users</h3>
@@ -215,42 +276,126 @@ const EventDetailsModal = ({ event, onClose }) => {
                   )}
                 </div>
                 <div className={styles.analyticsRight}>
-  <div className={styles.analyticsHeader}>
-    <h3>Total Registrations: {registeredUsers.length}</h3>
-  </div>
+                  <div className={styles.analyticsHeader}>
+                    <h3>Total Registrations: {registeredUsers.length}</h3>
+                  </div>
 
-  <div className={styles.chartContainer}>
-    <Bar
-      data={{
-        labels: ['Registered Users'],
-        datasets: [
-          {
-            label: 'Users',
-            data: [registeredUsers.length], 
-            backgroundColor: ['#4e73df'],
-          },
-        ],
-      }}
-      options={{
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: { beginAtZero: true },
-        },
-      }}
-    />
-  </div>
+                  <div className={styles.chartContainer}>
+                    <Bar
+                      data={{
+                        labels: ["Registered Users"],
+                        datasets: [
+                          {
+                            label: "Users",
+                            data: [registeredUsers.length],
+                            backgroundColor: ["#4e73df"],
+                          },
+                        ],
+                      }}
+                      options={{
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                          y: { beginAtZero: true },
+                        },
+                      }}
+                    />
+                  </div>
 
-  <p className={styles.comingSoon}>More analytics coming soon...</p>
-</div>
-
+                  <p className={styles.comingSoon}>
+                    More analytics coming soon...
+                  </p>
+                </div>
               </div>
             )}
 
-            {activeTab === 'edit' && (
-              <div className={styles.tabContent}>
-                <h2>✏️ Edit Event</h2>
-                <p>This tab will contain the event editing form pre-filled with current data.</p>
+            {activeTab === "edit" && (
+              <div className={styles.editContainer}>
+                <div className={styles.posterContainer}>
+                  {formData.posterUrl ? (
+                    <img
+                      src={formData.posterUrl}
+                      alt="Event Poster"
+                      className={styles.poster}
+                    />
+                  ) : (
+                    <p>Paste a poster URL to preview</p>
+                  )}
+                </div>
+
+                <div className={styles.details}>
+                  <input
+                    type="text"
+                    name="eventName"
+                    placeholder="Event Name"
+                    className={styles.input}
+                    value={formData.eventName}
+                    onChange={handleChange}
+                    required
+                  />
+
+                  <input
+                    type="datetime-local"
+                    name="eventDate"
+                    className={styles.input}
+                    value={formData.eventDate}
+                    onChange={handleChange}
+                    required
+                  />
+
+                  <input
+                    type="text"
+                    name="location"
+                    placeholder="Location"
+                    className={styles.input}
+                    value={formData.location}
+                    onChange={handleChange}
+                    required
+                  />
+
+                  <input
+                    type="number"
+                    name="registrationFee"
+                    placeholder="Registration Fee (₹)"
+                    className={styles.input}
+                    value={formData.registrationFee}
+                    onChange={handleChange}
+                  />
+
+                  <textarea
+                    name="description"
+                    placeholder="Event Description"
+                    className={styles.textarea}
+                    value={formData.description}
+                    onChange={handleChange}
+                    required
+                  />
+
+                  <input
+                    type="text"
+                    name="posterUrl"
+                    placeholder="Poster Image URL"
+                    className={styles.input}
+                    value={formData.posterUrl}
+                    onChange={handleChange}
+                  />
+
+                  <div className={styles.buttonGroup}>
+                    <button
+                      className={styles.saveButton}
+                      onClick={handleUpdate}
+                      disabled={submitting}
+                    >
+                      {submitting ? "Saving..." : "Save"}
+                    </button>
+                    <button
+                      className={styles.cancelButton}
+                      onClick={() => setActiveTab("details")}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
               </div>
             )}
           </div>
