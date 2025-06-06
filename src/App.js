@@ -17,6 +17,7 @@ import VenueAvailability from './pages/VenueAvailability';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminVenueAvailability from './pages/AdminVenueAvailability';
 import EventApprovals from './pages/EventApprovals';
+import ManageUsers from './pages/ManageUsers';
 
 function App() {
   let organizer='organizer';
@@ -40,6 +41,7 @@ function App() {
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/venue" element={<AdminVenueAvailability />} />
             <Route path="/admin/approvals" element={<EventApprovals />} />
+            <Route path="/admin/users" element={<ManageUsers />} />
           </Routes>
         </main>
         <Footer />

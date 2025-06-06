@@ -71,13 +71,13 @@ const DatePopup = ({ selectedDate, onClose, isAdmin = false }) => {
         <h2>Selected Date: {formattedDisplay}</h2>
 
         <div className={styles.slotSection}>
-          <h3>Available Slots</h3>
+          <h3>Booked Slots</h3>
           {loading ? (
             <p>Loading...</p>
           ) : error ? (
             <p style={{ color: 'red' }}>{error}</p>
           ) : slots.length === 0 ? (
-            <p>No slots available.</p>
+            <p>No booked slots available.</p>
           ) : (
             <table className={styles.slotTable}>
               <thead>

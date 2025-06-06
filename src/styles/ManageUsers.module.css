@@ -1,0 +1,57 @@
+.container {
+  padding: 3rem 2rem;
+  min-height: 85vh;
+  background: linear-gradient(to bottom right, #f0f4ff, #e0ecff);
+  text-align: center;
+}
+
+.container h2 {
+  font-size: 2rem;
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+  font-weight: bold;
+}
+
+.searchInput {
+  padding: 0.6rem 1rem;
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.userList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.userCard {
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  padding: 1rem;
+  background: var(--light-bg);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.userCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+  font-size: 0.95rem;
+}
+
+.icon {
+  margin-right: 0.6rem;
+  color: var(--primary-color);
+}
