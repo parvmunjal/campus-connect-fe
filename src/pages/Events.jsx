@@ -1,6 +1,6 @@
 // src/pages/Events.jsx
 import React, { useEffect, useState } from 'react';
-import { fetchEvents } from '../services/eventService.js';
+import { fetchApprovedEvents } from '../services/eventService.js';
 import EventCard from '../components/events/EventCard';
 import EventDetailsModal from '../components/events/EventDetailsModal';
 import Loader from '../components/common/Loader';
@@ -14,7 +14,7 @@ const Events = () => {
 
   const loadEvents = async () => {
     try {
-      const data = await fetchEvents();
+      const data = await fetchApprovedEvents();
       setEvents(data);
     } catch (err) {
       toast.error(err.message);

@@ -105,6 +105,18 @@ export const fetchPendingEvents = async () => {
 
   return res.data;
 };
+export const fetchApprovedEvents = async () => {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('User not authenticated');
+
+  const res = await axios.get(`${BASE_URL}/events/approved`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return res.data;
+};
 export const approveEvent = async (eventId) => {
   const token = localStorage.getItem('token');
   if (!token) throw new Error('User not authenticated');

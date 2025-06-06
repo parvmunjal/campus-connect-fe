@@ -11,7 +11,7 @@ const OrganizerDashboard = () => {
   return (
     <div className={styles.fullPage}>
       <div className={styles.container}>
-        <h2 className={styles.heading}>Welcome Organizer!</h2>
+        <h2 className={styles.heading}>Welcome to Campus Connect</h2>
         
         <div className={styles.cardGrid}>
           <DashboardCard
