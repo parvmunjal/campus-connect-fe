@@ -14,6 +14,9 @@ import OrganizerDashboard from './pages/OrganizerDashboard';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import VenueAvailability from './pages/VenueAvailability';
+import AdminDashboard from './pages/AdminDashboard';
+import AdminVenueAvailability from './pages/AdminVenueAvailability';
+import EventApprovals from './pages/EventApprovals';
 
 function App() {
   let organizer='organizer';
@@ -34,6 +37,9 @@ function App() {
             <Route path="/organizer/myevents" element={<MyEvent />} />
             <Route path="/organizer/create" element={<CreateEvents />} />
             <Route path="/organizer/venue" element={<VenueAvailability />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/venue" element={<AdminVenueAvailability />} />
+            <Route path="/admin/approvals" element={<EventApprovals />} />
           </Routes>
         </main>
         <Footer />

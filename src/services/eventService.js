@@ -93,5 +93,41 @@ export const updateEvent = async (eventId, updatedData) => {
 
   return res.data;
 };
+export const fetchPendingEvents = async () => {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('User not authenticated');
+
+  const res = await axios.get(`${BASE_URL}/events/pending`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return res.data;
+};
+export const approveEvent = async (eventId) => {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('User not authenticated');
+
+  const res = await axios.patch(`${BASE_URL}/events/pending/approve/${eventId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return res.data;
+};
+export const rejectEvent = async (eventId) => {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('User not authenticated');
+
+  const res = await axios.patch(`${BASE_URL}/events/pending/reject/${eventId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return res.data;
+};
 
 

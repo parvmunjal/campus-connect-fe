@@ -29,7 +29,11 @@ const NavBar = () => {
     console.log(auth.role)
     if (auth.role == "ROLE_ORGANIZER") {
       navigate('/organizer');
-    } else {
+    }
+    else if (auth.role == "ROLE_ADMIN") {
+      navigate('/admin');
+    }
+    else {
       navigate('/');
     }
   };

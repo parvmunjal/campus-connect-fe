@@ -6,6 +6,8 @@ import {
   getUserRegisteredEvents,
   eventAnalytics,
   updateEvent,
+  approveEvent,
+  rejectEvent,
 } from "../../services/eventService";
 import { toast } from "react-toastify";
 import ProfileCardModal from "../profile/ProfileCardModal";
@@ -21,7 +23,7 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
-const EventDetailsModal = ({ event, onClose }) => {
+const EventDetailsModal = ({ event, onClose, isApprovalMode = false }) => {
   const { auth } = useAuth();
   const [registering, setRegistering] = useState(false);
   const [isRegistered, setIsRegistered] = useState(false);
@@ -31,20 +33,22 @@ const EventDetailsModal = ({ event, onClose }) => {
   const [activeTab, setActiveTab] = useState("details");
   const [registeredUsers, setRegisteredUsers] = useState([]);
   const [loadingAnalytics, setLoadingAnalytics] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
   const [formData, setFormData] = useState({
     eventName: event.eventName,
-    eventDate: new Date(event.eventDate).toISOString().slice(0, 16), // for datetime-local
+    eventDate: new Date(event.eventDate).toISOString().slice(0, 16),
     location: event.location,
     registrationFee: event.registrationFee || "",
     description: event.description,
     posterUrl: event.posterUrl || "",
   });
 
-  const [submitting, setSubmitting] = useState(false);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
   const handleUpdate = async () => {
     const {
       eventName,
@@ -94,7 +98,6 @@ const EventDetailsModal = ({ event, onClose }) => {
         );
         setIsRegistered(alreadyRegistered);
       } catch (err) {
-        console.error("Failed to check registration:", err);
         toast.error("Failed to check registration status.");
       } finally {
         setCheckingRegistration(false);
@@ -112,7 +115,6 @@ const EventDetailsModal = ({ event, onClose }) => {
         const users = await eventAnalytics(event.id);
         setRegisteredUsers(users);
       } catch (err) {
-        console.error("Failed to fetch analytics:", err);
         toast.error("Failed to fetch analytics.");
       } finally {
         setLoadingAnalytics(false);
@@ -152,6 +154,26 @@ const EventDetailsModal = ({ event, onClose }) => {
     }
   };
 
+  const handleApprove = async () => {
+    try {
+      await approveEvent(event.id);
+      toast.success("Event approved!");
+      onClose();
+    } catch (err) {
+      toast.error("Failed to approve event");
+    }
+  };
+
+  const handleReject = async () => {
+    try {
+      await rejectEvent(event.id);
+      toast.success("Event rejected.");
+      onClose();
+    } catch (err) {
+      toast.error("Failed to reject event");
+    }
+  };
+
   return (
     <>
       <div className={styles.overlay} onClick={onClose}>
@@ -161,7 +183,8 @@ const EventDetailsModal = ({ event, onClose }) => {
           </button>
 
           {auth?.role === "ROLE_ORGANIZER" &&
-            auth.userId === event.organizer.user.id && (
+            auth.userId === event.organizer.user.id &&
+            !isApprovalMode && (
               <div className={styles.tabBar}>
                 <button
                   className={`${styles.tab} ${
@@ -225,7 +248,24 @@ const EventDetailsModal = ({ event, onClose }) => {
                     <strong>Description:</strong> {event.description}
                   </p>
 
-                  {auth?.role === "ROLE_USER" && (
+                  {isApprovalMode && auth?.role === "ROLE_ADMIN" && (
+                    <div className={styles.buttonGroup}>
+                      <button
+                        className={styles.approveButton}
+                        onClick={handleApprove}
+                      >
+                        Approve
+                      </button>
+                      <button
+                        className={styles.rejectButton}
+                        onClick={handleReject}
+                      >
+                        Reject
+                      </button>
+                    </div>
+                  )}
+
+                  {!isApprovalMode && auth?.role === "ROLE_USER" && (
                     <>
                       {checkingRegistration ? (
                         <button className={styles.registerBtn} disabled>
@@ -276,10 +316,7 @@ const EventDetailsModal = ({ event, onClose }) => {
                   )}
                 </div>
                 <div className={styles.analyticsRight}>
-                  <div className={styles.analyticsHeader}>
-                    <h3>Total Registrations: {registeredUsers.length}</h3>
-                  </div>
-
+                  <h3>Total Registrations: {registeredUsers.length}</h3>
                   <div className={styles.chartContainer}>
                     <Bar
                       data={{
@@ -301,7 +338,6 @@ const EventDetailsModal = ({ event, onClose }) => {
                       }}
                     />
                   </div>
-
                   <p className={styles.comingSoon}>
                     More analytics coming soon...
                   </p>

@@ -27,6 +27,9 @@ const Auth = () => {
       if(data.role=="ROLE_ORGANIZER"){
         navigate('/organizer')
       }
+      else if(data.role=="ROLE_ADMIN"){
+        navigate('/admin')
+      }
       else{
         navigate('/')
       }

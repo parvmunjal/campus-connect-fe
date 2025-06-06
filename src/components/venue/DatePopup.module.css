@@ -66,3 +66,47 @@
 .closeBtn:hover {
   background-color: var(--dark-bg);
 }
+.slotSection input[type="time"],
+.slotSection input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  margin: 6px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+}
+
+.slotSection input[type="time"]::placeholder,
+.slotSection input[type="text"]::placeholder {
+  color: #888;
+}
+
+.slotSection button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+}
+
+.slotSection button:hover {
+  background-color: var(--dark-bg);
+}
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 10px;
+}
+
+.formGroup label {
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 0.95rem;
+  color: var(--text-color);
+}
