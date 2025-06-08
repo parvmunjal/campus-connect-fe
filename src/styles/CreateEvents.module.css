@@ -97,3 +97,58 @@
   font-weight: 500;
   cursor: pointer;
 }
+@media screen and (max-width: 768px) {
+  .modal {
+    width: 95%;
+    height: 90vh;
+    flex-direction: column;
+    margin-top: 2rem;
+  }
+
+  .content {
+    flex-direction: column;
+    overflow: hidden;
+    flex: 1 1 auto;
+  }
+
+  .posterContainer {
+    flex: none;
+    width: 100%;
+    padding: 0.5rem;
+    max-height: 300px;
+  }
+
+  .poster {
+    width: 100%;
+    height: auto;
+    max-height: 300px;
+    object-fit: contain;
+  }
+
+  .details {
+    flex: 1 1 auto;
+    width: 100%;
+    padding: 1rem;
+    overflow-y: auto;
+    text-align: left; /* easier reading on mobile */
+  }
+
+  .input,
+  .textarea {
+    font-size: 1rem;
+  }
+
+  .buttonGroup {
+    margin-top: 1rem;
+    flex-direction: column;
+    gap: 0.75rem;
+    justify-content: stretch;
+  }
+
+  .saveButton,
+  .cancelButton {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+  }
+}
