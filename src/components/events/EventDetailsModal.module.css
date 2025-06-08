@@ -317,6 +317,7 @@
     width: 95%;
     height: 90vh;
     flex-direction: column;
+    margin-top: 35px;
   }
 
   .content {
