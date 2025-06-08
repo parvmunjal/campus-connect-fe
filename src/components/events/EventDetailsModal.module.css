@@ -312,3 +312,55 @@
 .rejectButton:hover {
   background-color: #b91c1c; /* Tailwind red-700 */
 }
+@media screen and (max-width: 768px) {
+  .modal {
+    width: 95%;
+    height: 90vh;
+    flex-direction: column;
+  }
+
+  .content {
+    flex-direction: column;
+    overflow: auto;
+  }
+
+  .posterContainer {
+    flex: none;
+    width: 100%;
+    padding: 0.5rem;
+  }
+
+  .poster {
+    width: 100%;
+    height: auto;
+    max-height: 300px;
+    object-fit: contain;
+  }
+
+  .details {
+    flex: none;
+    width: 100%;
+    padding: 1rem;
+    overflow-y: auto;
+  }
+
+  .tabContent {
+    padding: 1rem;
+    font-size: 1rem;
+  }
+
+  .analyticsContainer {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .userList {
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .analyticsRight {
+    width: 100%;
+    margin-top: 1rem;
+  }
+}

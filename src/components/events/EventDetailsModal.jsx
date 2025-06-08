@@ -218,7 +218,7 @@ const EventDetailsModal = ({ event, onClose, isApprovalMode = false }) => {
               <>
                 <div className={styles.posterContainer}>
                   <img
-                    src={event.posterUrl || "/default-poster.jpg"}
+                    src={event.posterUrl || "/default-poster.png"}
                     alt="Event Poster"
                     className={styles.poster}
                   />
@@ -236,7 +236,7 @@ const EventDetailsModal = ({ event, onClose, isApprovalMode = false }) => {
                     <strong>Organizer:</strong>{" "}
                     <span
                       className={styles.organizerLink}
-                      onClick={() => setShowProfileModal(true)}
+                      onClick={() => {setShowProfileModal(true); setSelectedUserId(event.organizer.user.id)}}
                     >
                       {event.organizer?.name}
                     </span>
@@ -438,7 +438,7 @@ const EventDetailsModal = ({ event, onClose, isApprovalMode = false }) => {
         </div>
       </div>
 
-      {showProfileModal && selectedUserId && (
+      {showProfileModal  && (
         <ProfileCardModal
           show={showProfileModal}
           onClose={() => setShowProfileModal(false)}

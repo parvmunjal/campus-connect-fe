@@ -28,7 +28,7 @@ const Events = () => {
   }, []);
 
   const handleCardClick = (event) => {
-    setSelectedEvent(event); // OPEN MODAL
+    setSelectedEvent(event); 
   };
 
   const handleCloseModal = () => {

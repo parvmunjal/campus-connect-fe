@@ -52,7 +52,7 @@ const ProfileCardModal = ({ show, onClose, userId, role }) => {
           <>
             <div className={styles.profileImageWrapper}>
               <img
-                src={profileData?.dpUrl || '/default-profile.png'}
+                src={profileData?.dpUrl || '/default-profile.jpg'}
                 alt="Profile"
                 className={styles.profileImage}
               />
