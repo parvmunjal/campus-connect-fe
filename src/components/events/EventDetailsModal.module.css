@@ -310,25 +310,34 @@
 }
 
 .rejectButton:hover {
-  background-color: #b91c1c; /* Tailwind red-700 */
+  background-color: #b91c1c;
 }
 @media screen and (max-width: 768px) {
   .modal {
     width: 95%;
     height: 90vh;
     flex-direction: column;
-    margin-top: 35px;
+    margin-top: 4rem;
   }
 
   .content {
     flex-direction: column;
-    overflow: auto;
+    overflow: hidden; 
+    flex: 1 1 auto;   
+  }
+
+  .editContainer {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;  
+    overflow: hidden; 
   }
 
   .posterContainer {
     flex: none;
     width: 100%;
     padding: 0.5rem;
+    max-height: 300px;
   }
 
   .poster {
@@ -339,10 +348,10 @@
   }
 
   .details {
-    flex: none;
+    flex: 1 1 auto;    
     width: 100%;
     padding: 1rem;
-    overflow-y: auto;
+    overflow-y: auto;  
   }
 
   .tabContent {
