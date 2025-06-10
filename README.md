@@ -24,8 +24,8 @@ Campus Connect is a centralized web platform that simplifies campus event manage
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/campus-connect-frontend.git
-   cd campus-connect-frontend
+   git clone https://github.com/yourusername/campus-connect-fe.git
+   cd campus-connect-fe
 2. Install dependencies:
    ```bash
    npm install
